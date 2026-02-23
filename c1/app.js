@@ -14,6 +14,9 @@ app.use(express.json());
 
 db.init();
 
+app.post("/api/v1/signup");
+app.post("/api/v1/login");
+
 //CRUD
 app.get("/movies", movies.getAll);
 app.get("/movies/:id", movies.getOne);

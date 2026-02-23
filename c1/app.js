@@ -5,6 +5,7 @@
 const express = require("express");
 const db = require("./pkg/db/index");
 const movies = require("./handlers/movie");
+const auth = require("./handlers/authHandler");
 
 const app = express();
 
@@ -14,8 +15,8 @@ app.use(express.json());
 
 db.init();
 
-app.post("/api/v1/signup");
-app.post("/api/v1/login");
+app.post("/api/v1/signup", auth.signup);
+// app.post("/api/v1/login");
 
 //CRUD
 app.get("/movies", movies.getAll);

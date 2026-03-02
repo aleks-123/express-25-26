@@ -19,11 +19,14 @@ app.post("/api/v1/signup", auth.signup);
 app.post("/api/v1/login", auth.login);
 
 //CRUD
-app.get("/movies", auth.protect, auth.restrict("user"), movies.getAll);
+app.get("/movies", auth.protect, movies.getAll);
 app.get("/movies/:id", auth.protect, auth.restrict("amdin"), movies.getOne);
 app.post("/movies", movies.create);
 app.patch("/movies/:id", movies.update);
 app.delete("/movies/:id", movies.delete);
+
+app.get("/me", auth.protect, movies.getbyUser);
+app.post("/createuser", auth.protect, movies.createByUser);
 
 app.listen(process.env.PORT, (err) => {
   if (err) {

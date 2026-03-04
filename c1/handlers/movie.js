@@ -107,9 +107,9 @@ exports.getbyUser = async (req, res) => {
   try {
     // const author = req.user.id;
 
-    const author = req.user.id;
+    const logiranKorisnikodProtektMidelware = req.user.id;
 
-    const myMovies = await Movie.find({ author: author });
+    const myMovies = await Movie.find({ author: logiranKorisnikodProtektMidelware });
 
     res.status(200).json(myMovies);
   } catch (err) {

@@ -29,9 +29,6 @@ exports.signup = async (req, res) => {
     res.status(201).json({
       status: "success",
       token,
-      data: {
-        user: newUser,
-      },
     });
   } catch (err) {
     return res.status(500).send(err.message);
@@ -90,8 +87,13 @@ exports.protect = async (req, res, next) => {
     // console.log(req.headers);
     // 1. Go zemame tokenot i proveruvame dali e tamu
     let token;
+
     if (req.headers.authorization) {
       token = req.headers.authorization.split(" ")[1];
+    }
+
+    if (req.cookies.jwt) {
+      token = req.cookies.jwt;
     }
 
     if (!token) {

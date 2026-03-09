@@ -3,6 +3,10 @@
 // express
 // mongoose
 // cookie-parser
+// multer -> biblioteka sto ni ovozmozuva da dodavame fajlovi vo nashiot backend
+// uuid -> biblioteka sto ni ovozmozuva da generirame unikatni indetfikaciski broevi i bukvi
+// ❯ npm install multer uuid
+
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const db = require("./pkg/db/index");
@@ -28,14 +32,15 @@ app.post("/api/v1/login", auth.login);
 app.get("/movies", auth.protect, movies.getAll);
 app.get("/movies/:id", auth.protect, auth.restrict("amdin"), movies.getOne);
 app.post("/movies", movies.create);
-app.patch("/movies/:id", movies.update);
+app.patch("/movies/:id", movies.uploadFilmPhoto, movies.update);
 app.delete("/movies/:id", movies.delete);
 
 app.get("/me", auth.protect, movies.getbyUser);
 app.post("/createuser", auth.protect, movies.createByUser);
 
 app.get("/login", view.getLoginForm);
-// app.get("/viewmovies", auth.protect, view.viewallmovies)
+app.get("/viewmovies", auth.protect, view.viewallmovies);
+// app.get('/viewmovies/:id', view.oneMovie)
 //app.get("/mineMovies")
 
 app.listen(process.env.PORT, (err) => {

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1><%= naslov %></h1>
+    <h2><%= podnaslov %></h2>
+
+    <% if (movies.length === 0) {
+      %> <p>Nema pronajdeni filmovi</p> <% 
+    } else {
+      %> <% movies.forEach(movie => {
+        %> <div class="film">
+            <a href="/viewmovies/<%= movie.id %>">
+                <h2><%= movie.title %></h2>
+            </a>
+            <img src="/images/<%=movie.slika %>" alt="">
+            <p>Rating: <%= movie.imbdRating %></p>
+        </div> <% 
+      }); %> <% } %>
+
+
+
+  </body>
+</html>

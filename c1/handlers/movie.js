@@ -29,17 +29,35 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadFilmPhoto = upload.single("slika"); // req.file;
+// exports.uploadFilmPhoto = upload.single("slika"); // req.file;
 // exports.uploadFilmPhotos = upload.array("sliki", 3); // req.files
-// exports.uploadMultiplePhotos = upload.fields([
-//   { name: "slika", maxCount: 1 },
-//   { name: "sliki", maxCount: 3 },
-// ]);
+exports.uploadMultiplePhotos = upload.fields([
+  { name: "slika", maxCount: 1 },
+  { name: "sliki", maxCount: 3 },
+]); // req.files = {slika:[{}], sliki:[{}]}
 
 exports.update = async (req, res) => {
   try {
+    console.log(req.files);
+    // console.log(req.body);
+
+    if (req.file) {
+      const filename = req.file.filename;
+      req.body.slika = filename;
+    }
+
+    // if (req.files) {
+    //   const filenames = req.files.map((file) => file.filename);
+    //   req.body.sliki = filenames;
+    // }
+
+    if (req.files && req.files.sliki) {
+      const filenames = req.files.sliki.map((file) => file.filename);
+      req.body.sliki = filenames;
+    }
+
     const movie = await Movie.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
     res.status(200).json({

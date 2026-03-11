@@ -32,7 +32,9 @@ app.post("/api/v1/login", auth.login);
 app.get("/movies", auth.protect, movies.getAll);
 app.get("/movies/:id", auth.protect, auth.restrict("amdin"), movies.getOne);
 app.post("/movies", movies.create);
+
 app.patch("/movies/:id", movies.uploadFilmPhoto, movies.update);
+//req.file =
 app.delete("/movies/:id", movies.delete);
 
 app.get("/me", auth.protect, movies.getbyUser);

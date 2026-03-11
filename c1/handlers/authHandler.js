@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../pkg/user/userSchema");
 const bcrypt = require("bcryptjs");
 const { promisify } = require("util");
+const sendEmail = require("./emailHandler");
 
 exports.signup = async (req, res) => {
   try {
@@ -24,6 +25,12 @@ exports.signup = async (req, res) => {
       expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
       secure: false,
       httpOnly: true,
+    });
+
+    await sendEmail({
+      email: newUser.email,
+      subject: "Vi blagodarime za vashata podrska",
+      message: `${newUser.name} dobro dojdovte, se nadevame deka kje si pominite ubavo`,
     });
 
     res.status(201).json({

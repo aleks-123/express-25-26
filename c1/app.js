@@ -28,7 +28,9 @@ db.init();
 app.post("/api/v1/signup", auth.signup);
 app.post("/api/v1/login", auth.login);
 
-//dve ruti
+//Promena na pw
+app.post("/api/v1/forgotPassword", auth.forgotPassword);
+app.patch("/resetPassword/:token", auth.resetPassword);
 
 //CRUD
 app.get("/movies", auth.protect, movies.getAll);

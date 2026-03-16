@@ -188,6 +188,48 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
+exports.resetPassword = async (req, res) => {
+  try {
+    // 1. Dobieniot token povtorno go hashirame
+    const token = req.params.token;
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    // 2 Go pronaogjame korisniot od hashiraniot token
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+      return res.status(400).send("token is invalid or expired");
+    }
+
+    user.password = req.body.password;
+    user.passwordResetExpires = undefined;
+    user.passwordResetToken = undefined;
+    await user.save();
+
+    const jwtToken = jwt.sign(
+      { id: user.id, name: user.name, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRES,
+      },
+    );
+
+    res.cookie("jwt", token, {
+      expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+      secure: false,
+      httpOnly: true,
+    });
+
+    res.status(200).json({
+      status: "success",
+      jwtToken,
+    });
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+};
+
 // Forma za promena na pw
 // => vnesi email
 // submit

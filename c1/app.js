@@ -28,6 +28,8 @@ db.init();
 app.post("/api/v1/signup", auth.signup);
 app.post("/api/v1/login", auth.login);
 
+//dve ruti
+
 //CRUD
 app.get("/movies", auth.protect, movies.getAll);
 app.get("/movies/:id", auth.protect, auth.restrict("amdin"), movies.getOne);

@@ -28,6 +28,8 @@ const userSchema = new mongoose.Schema({
     // validate: [validator.isStrongPassword, "Mora da e bezbeden passwordot"],
     minLength: [4, "Mora da ima najmalce 4 karakteri"],
   },
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 });
 
 userSchema.pre("save", async function (next) {

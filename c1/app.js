@@ -13,6 +13,7 @@ const db = require("./pkg/db/index");
 const movies = require("./handlers/movie");
 const auth = require("./handlers/authHandler");
 const view = require("./handlers/viewHandler");
+const Mail = require("nodemailer/lib/mailer");
 
 const app = express();
 
@@ -31,6 +32,11 @@ app.post("/api/v1/login", auth.login);
 //Promena na pw
 app.post("/api/v1/forgotPassword", auth.forgotPassword);
 app.patch("/resetPassword/:token", auth.resetPassword);
+
+app.get("/forgotpassword", view.getForgotPasswordForm); // zamena za postman
+app.post("/submitForgotPassword", view.submitForgotPassword);
+app.get("/resetpasswordview/:token", view.getResetPasswordForm); // zamena za postman
+app.post("/submitRessetPassword/:token", view.submitNewPassword);
 
 //CRUD
 app.get("/movies", auth.protect, movies.getAll);
